@@ -59,8 +59,8 @@ Add to your init file (`~/.emacs.d/init.el` or `~/.emacs`):
 ```elisp
 (add-to-list 'load-path "~/path/to/rename-chapter")
 (require 'rename-chapter)
-(define-key LaTeX-mode-map (kbd "C-c r") #'rename-chapter)
-(define-key org-mode-map   (kbd "C-c r") #'rename-chapter)
+(define-key LaTeX-mode-map (kbd "C-c C-r") #'rename-chapter)
+(define-key org-mode-map   (kbd "C-c C-r") #'rename-chapter)
 ```
 
 ### Option B — use-package with a local checkout
@@ -69,9 +69,9 @@ Add to your init file (`~/.emacs.d/init.el` or `~/.emacs`):
 (use-package rename-chapter
   :load-path "~/path/to/rename-chapter"
   :bind (:map LaTeX-mode-map
-         ("C-c r" . rename-chapter)
+         ("C-c C-r" . rename-chapter)
          :map org-mode-map
-         ("C-c r" . rename-chapter)))
+         ("C-c C-r" . rename-chapter)))
 ```
 
 ### Option C — straight.el
@@ -80,9 +80,9 @@ Add to your init file (`~/.emacs.d/init.el` or `~/.emacs`):
 (use-package rename-chapter
   :straight (:host github :repo "MooersLab/rename-chapter")
   :bind (:map LaTeX-mode-map
-         ("C-c r" . rename-chapter)
+         ("C-c C-r" . rename-chapter)
          :map org-mode-map
-         ("C-c r" . rename-chapter)))
+         ("C-c C-r" . rename-chapter)))
 ```
 
 ### Option D — Manual single-file install
@@ -106,7 +106,7 @@ Copy `rename-chapter.el` somewhere on your `load-path` and add `(require 'rename
    #+INCLUDE: "./Contents/chapter1.org"
    ```
 
-3. Run `M-x rename-chapter` (or press your keybinding, e.g. `C-c r`).
+3. Run `M-x rename-chapter` (or press your keybinding, e.g. `C-c C-r`).
 4. The package reads `ch03_methods.tex`, finds `\chapter{Materials and Methods}`, and then:
    - renames `./Contents/ch03_methods.tex` → `./Contents/MaterialsandMethods.tex`
    - updates the line to `\include{./Contents/MaterialsandMethods}`
