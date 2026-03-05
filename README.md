@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/static/v1?label=rename-chapter&message=0.1&color=brightcolor)
+![Version](https://img.shields.io/static/v1?label=rename-chapter&message=0.1.0&color=brightcolor)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Emacs](https://img.shields.io/badge/Emacs-27.1+-purple.svg)](https://www.gnu.org/software/emacs/)
 
@@ -280,7 +280,7 @@ This project is licensed under the GNU General Public License v3.0.  See [LICENS
 
 |Version      | Changes                                                                                                                                  | Date                 |
 |:------------|:---------------------------------------------------------------------------------------------------------------------------------------- |:---------------------|
-| Version 0.1 |   Added badges, funding, and update table.  Initial commit of working code.                                           | 2026 March 4      |
+| Version 0.1.0 |  Initial commit of working code.                                           | 2026 March 4      |
 
 
 ## Sources of funding
