@@ -44,7 +44,7 @@ When you split a book or thesis into one file per chapter, the filenames in your
 
 - **Emacs 27.1** or later (for `string-empty-p`, `cl-lib` built-in, and `lexical-binding` defaults).
 
-No external dependencies are needed.
+No external dependencies are needed, except ert to run the tests and undercover to report coverage, which can be done via the Makefile.
 
 ## Installation
 
